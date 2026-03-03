@@ -1,0 +1,21 @@
+{
+  "name": "blueforest-branding",
+  "description": "BlueForest Studios brand identity skill for HTML designs — logo, colors, fonts, and Iconify icons",
+  "owner": {
+    "name": "BlueForest Studios",
+    "email": "ammon@blueforeststudios.com"
+  },
+  "plugins": [
+    {
+      "name": "blueforest-branding",
+      "description": "Apply BlueForest Studios brand identity (logo, colors, fonts, icons) to HTML files and web designs",
+      "version": "1.0.0",
+      "author": {
+        "name": "BlueForest Studios",
+        "email": "ammon@blueforeststudios.com"
+      },
+      "source": "./plugins/blueforest-branding",
+      "category": "design"
+    }
+  ]
+}
