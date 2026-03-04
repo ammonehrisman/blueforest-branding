@@ -71,16 +71,20 @@ body {
 
 ## Logo
 
-The BlueForest Studios logo is a PNG file. To embed it in self-contained HTML designs, **read the logo file and convert it to a base64 data URI at build time**.
+The BlueForest Studios logo is available as optimized SVG files in the skill's assets directory. **Embed logos as inline SVG directly in the HTML** — no base64 encoding or external URLs needed.
 
 ### How to embed the logo
 
-1. Use the `Read` tool to read the logo PNG file from the skill's assets directory at: `plugins/blueforest-branding/skills/blueforest-branding/assets/BlueForestStudios_LOGO_RGB.png`
-2. If the file is not found locally, use this public URL as the `src`: `https://raw.githubusercontent.com/blueforeststudios/blueforest-branding/main/plugins/blueforest-branding/skills/blueforest-branding/assets/BlueForestStudios_LOGO_RGB.png`
-3. For fully self-contained HTML, convert the PNG to base64 using Bash: `base64 -i <path-to-logo>` and embed as `data:image/png;base64,{output}`
+1. Use the `Read` tool to read the SVG file from the assets directory:
+   - **Blue logo** (for light backgrounds): find the file matching `**/BlueForestStudios_logo_blue.svg` in the plugin assets
+   - **White logo** (for dark backgrounds): find the file matching `**/BlueForestStudios_logo_white.svg` in the plugin assets
+2. Use `Glob` with pattern `**/blueforest-branding/assets/BlueForestStudios_logo_blue.svg` to locate the file if the exact path is unknown
+3. Paste the SVG markup directly into the HTML wrapped in a container div — do NOT use `<img>` tags or base64
 
 ```html
-<img src="{LOGO_SRC}" alt="BlueForest Studios" class="bfs-logo">
+<div class="bfs-logo" aria-label="BlueForest Studios">
+  <!-- Paste the full SVG markup from the asset file here -->
+</div>
 ```
 
 ### Logo placement rules
@@ -205,7 +209,7 @@ Alternate between `var(--bfs-white)`, `var(--bfs-cream)`, and `var(--bfs-ice)` f
 When applying BlueForest branding to a design:
 
 1. **Apply the brand system**: colors as CSS variables, Poppins font, design patterns
-2. **Embed the logo**: read the asset file and embed as base64 data URI, or use the GitHub URL
+2. **Embed the logo**: read the SVG asset file and paste as inline SVG markup
 3. **Search Iconify** for relevant icons based on the page content — aim for 5-10+ icons minimum
 4. **Use design patterns**: buttons, cards, section alternation from this guide
 5. **Make it responsive**: viewport meta tag, flexbox/grid, mobile-friendly sizing
