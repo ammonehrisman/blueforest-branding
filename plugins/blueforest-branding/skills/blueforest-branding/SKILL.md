@@ -71,20 +71,32 @@ body {
 
 ## Logo
 
-The BlueForest Studios logo is hosted at a permanent public URL. **Always use this URL directly** — do NOT attempt base64 encoding, do NOT use Read/Glob to find local asset files. This avoids wasting tool calls and context window on large image data.
+The BlueForest Studios logo SVGs are hosted at permanent public URLs. **Always use these URLs directly** — do NOT attempt base64 encoding or read the file contents.
 
-### Logo URL
+The SVG files have a tightly cropped `viewBox` (no excess whitespace), so they will render at the correct visual size with simple CSS sizing. Do NOT add extra padding or scaling adjustments.
 
+### Logo URLs
+
+**Blue logo** (for light backgrounds):
 ```
 https://raw.githubusercontent.com/ammonehrisman/blueforest-branding/main/plugins/blueforest-branding/skills/blueforest-branding/assets/BlueForestStudios_logo_blue.svg
 ```
 
+**White logo** (for dark backgrounds):
+```
+https://raw.githubusercontent.com/ammonehrisman/blueforest-branding/main/plugins/blueforest-branding/skills/blueforest-branding/assets/BlueForestStudios_logo_white.svg
+```
+
 ### How to embed the logo
 
-Use the URL directly as the `src` attribute. One line, no tool calls needed.
+Use the URL directly as the `src` attribute. Do not read the file, do not convert to base64.
 
 ```html
+<!-- Light backgrounds -->
 <img src="https://raw.githubusercontent.com/ammonehrisman/blueforest-branding/main/plugins/blueforest-branding/skills/blueforest-branding/assets/BlueForestStudios_logo_blue.svg" alt="BlueForest Studios" class="bfs-logo">
+
+<!-- Dark backgrounds -->
+<img src="https://raw.githubusercontent.com/ammonehrisman/blueforest-branding/main/plugins/blueforest-branding/skills/blueforest-branding/assets/BlueForestStudios_logo_white.svg" alt="BlueForest Studios" class="bfs-logo">
 ```
 
 ### Logo placement rules
@@ -92,6 +104,7 @@ Use the URL directly as the `src` attribute. One line, no tool calls needed.
 - **Header/navbar**: Top-left, max-height 50px
 - **Hero sections**: Centered, max-height 80px
 - **Footers**: Centered or left-aligned, max-height 40px
+- For dark-background sections (like footers), use the **white logo** variant — do NOT use CSS `filter: invert()` or `brightness()` hacks
 - Always provide at least 16px clear space around the logo
 - Never distort, crop, or recolor the logo
 
@@ -137,6 +150,67 @@ Use the URL directly as the `src` attribute. One line, no tool calls needed.
   width: 48px;
   height: 48px;
   color: var(--bfs-blue);
+}
+```
+
+## Layout Rules
+
+### List items must have large, unique icons
+
+Every bulleted or numbered list must display a unique, contextually relevant icon for each item. The icon should be **as large as the containing block allows** — typically 48–64px inside a styled icon container for primary list items, and 24–36px for nested sub-items. Each icon must be distinct and meaningfully represent the item's content (e.g. `sunrise` for establishing shots, `key` for real estate agents, `scissors` for post-production). Use the Lucide icon set via CDN (`<script src="https://unpkg.com/lucide@latest"></script>`) with `<i data-lucide="icon-name"></i>` syntax, and call `lucide.createIcons()` at the end of the body.
+
+```css
+.bfs-icon-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.bfs-icon-list-item .icon-container {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0,157,220,0.1), rgba(0,157,220,0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bfs-blue);
+}
+.bfs-icon-list-item .icon-container svg {
+  width: 28px;
+  height: 28px;
+}
+```
+
+### No full-width text — always use split layouts
+
+Text content must **never span the full width of the page**. Every section must use a two-column (or multi-column) layout where one side contains the text/list content and the other side contains a relevant visual element. Visual elements include:
+
+- **CSS data visualizations** — bar charts, progress bars, funnels, meters
+- **Stat callouts** — large numbers with labels and icons (e.g. "15 Towns", "2–5 min")
+- **Icon compositions** — clusters of large related icons
+- **Decorative panels** — key metrics, quote boxes, summary cards
+- **Geometric/abstract graphics** — CSS shapes, gradients, patterns
+
+Columns should stack vertically on mobile (below 900px). Use a 60/40 or 50/50 split depending on content density.
+
+```css
+.bfs-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.bfs-split-60-40 {
+  grid-template-columns: 3fr 2fr;
+}
+.bfs-split-40-60 {
+  grid-template-columns: 2fr 3fr;
+}
+@media (max-width: 900px) {
+  .bfs-split, .bfs-split-60-40, .bfs-split-40-60 {
+    grid-template-columns: 1fr;
+  }
 }
 ```
 
@@ -209,7 +283,7 @@ Alternate between `var(--bfs-white)`, `var(--bfs-cream)`, and `var(--bfs-ice)` f
 When applying BlueForest branding to a design:
 
 1. **Apply the brand system**: colors as CSS variables, Poppins font, design patterns
-2. **Embed the logo**: use the GitHub URL directly (never base64, never Read/Glob for assets)
+2. **Embed the logo**: use the GitHub URL directly (never base64)
 3. **Search Iconify** for relevant icons based on the page content — aim for 5-10+ icons minimum
 4. **Use design patterns**: buttons, cards, section alternation from this guide
 5. **Make it responsive**: viewport meta tag, flexbox/grid, mobile-friendly sizing
@@ -222,6 +296,8 @@ Before delivering, verify:
 - Poppins font loaded from Google Fonts
 - Logo present in header and/or footer
 - Multiple Iconify icons used throughout the design
+- Every list item has a unique, large, contextually relevant icon
+- No section has text spanning the full page width — all sections use split/multi-column layouts with a visual element alongside the text
 - Buttons use `.bfs-btn` pattern with brand colors
 - Cards use `.bfs-card` pattern with subtle shadows
 - Sections alternate background colors for visual rhythm
